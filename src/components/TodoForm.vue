@@ -1,13 +1,16 @@
 <template>
     <form @submit.prevent="onSubmit">
-        <label for="todo-input">Mitä pitäisi tehdä?</label>
+        <h2 class="label-wrapper">
+            <label for="todo-input" class="input-lg">Mitä pitäisi tehdä?</label>
+        </h2>
         <input 
             type="text"
             id="todo-input"
             name="new-todo"
             autocomplete="off"
-            v-model.lazy.trim="label"  />
-        <button type="submit">Lisää</button>
+            v-model.lazy.trim="label"
+            class="input-lg"  />
+        <button type="submit" class="btn btn-primary btn-lg">Lisää</button>
     </form>
 </template>
 

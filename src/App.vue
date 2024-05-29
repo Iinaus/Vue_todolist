@@ -2,7 +2,7 @@
   <div id="app">
         <h1>To Do -lista</h1>
         <ToDoForm @todo-added="addToDo"></ToDoForm>
-        <ul>
+        <ul :aria-labelledby="list-summary" class="stack-large">
           <li v-for="item in ToDoItems" :key="item.id">
             <ToDoItem 
               :label="item.label"
@@ -44,12 +44,52 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .stack-small > * + * {
+    margin-top: 1.25rem;
+  }
+  .stack-large > * + * {
+    margin-top: 2.5rem;
+  }
+  @media screen and (min-width: 550px) {
+    .stack-small > * + * {
+      margin-top: 1.4rem;
+    }
+    .stack-large > * + * {
+      margin-top: 2.8rem;
+    }
+  }
+  /* End global styles */
+  #app {
+    background: #fff;
+    margin: 2rem 0 4rem 0;
+    padding: 1rem;
+    padding-top: 0;
+    position: relative;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2.5rem 5rem 0 rgba(0, 0, 0, 0.1);
+  }
+  @media screen and (min-width: 550px) {
+    #app {
+      padding: 4rem;
+    }
+  }
+  #app > * {
+    max-width: 50rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #app > form {
+    max-width: 100%;
+  }
+  #app h1 {
+    display: block;
+    min-width: 100%;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    margin-bottom: 1rem;
+  }
 </style>
