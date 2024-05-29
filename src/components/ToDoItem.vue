@@ -1,30 +1,72 @@
 <template>
-    <div class="custom-checkbox">
-        <input 
-            type="checkbox"
-            class="checkbox"
-            :id=id
-            :checked="isDone"
-            @change="$event => $emit('checkbox-changed')"   
-        />
-        <label :for="id" class="checkbox-label">{{label}}</label>
+     <div class="stack-small" v-if="!isEditing">
+        <div class="custom-checkbox">
+            <input
+                type="checkbox"
+                class="checkbox"
+                :id=id
+                :checked="done"
+                @change="$event => $emit('checkbox-changed')"  
+            />
+            <label :for="id" class="checkbox-label">{{label}}</label>
+        </div>
+        <div class="btn-group">
+            <button
+                type="button"
+                class="btn"
+                ref="editButton"
+                @click="toggleToDoItemEditForm">
+                Muokkaa
+                <span class="visually-hidden">{{ label }}</span>
+            </button>
+            <button
+                type="button" class="btn btn-danger" @click="deleteToDo">
+                Poista
+                <span class="visually-hidden">{{ label }}</span>
+            </button>
+        </div>
     </div>
-
+    <ToDoItemEditForm 
+        v-else
+        :id="id"
+        :label="label"
+        @item-edited="itemEdited"
+        @edit-cancelled="editCancelled" />
 </template>
 
 <script>
-    export default {
-        props: {
-            label: { required: true, type: String},
-            done: { default: false, type: Boolean},
-            id: { required: true, type: String}
-        },
-        data() {
-            return {
-                isDone: this.done,
-            }
+import ToDoItemEditForm from './ToDoItemEditForm.vue';
+export default {
+    components: {
+        ToDoItemEditForm,
+    },
+    props: {
+        label: { required: true, type: String},
+        done: { default: false, type: Boolean},
+        id: { required: true, type: String}
+    },
+    data() {
+        return {
+            isDone: this.done,
+            isEditing: false
         }
-    }   
+    },
+    methods: {
+        deleteToDo() {
+            this.$emit('item-deleted')
+        },
+        toggleToDoItemEditForm() {
+            this.isEditing = true
+        },
+        itemEdited(newLabel) {
+            this.$emit('item-edited', newLabel);
+            this.isEditing = false;
+        },
+        editCancelled() {
+            this.isEditing = false;
+        },
+    }
+}   
 </script>
 
 <style scoped>

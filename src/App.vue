@@ -9,7 +9,9 @@
               :label="item.label"
               :done="item.done"
               :id="item.id"
-              @checkbox-changed="$event => updateDoneStatus(item.id)">
+              @checkbox-changed="$event => updateDoneStatus(item.id)"
+              @item-deleted="$event => deleteToDo(item.id)"
+              @item-edited="$event => editToDo(item.id, $event)">
             </ToDoItem>
           </li>
         </ul>
@@ -19,7 +21,7 @@
 <script>
 import uniqueId from "lodash.uniqueid";
 import ToDoItem from "./components/ToDoItem.vue";
-import ToDoForm from "./components/TodoForm.vue";
+import ToDoForm from "./components/ToDoForm.vue";
 
 export default {
   name: 'App',
@@ -45,6 +47,15 @@ export default {
     updateDoneStatus(toDoId) {
       const toDoUpdate = this.ToDoItems.find((item) => item.id === toDoId)
       toDoUpdate.done = !toDoUpdate.done
+    },
+    deleteToDo(toDoId) {
+      const itemIndex = this.ToDoItems.findIndex((item) => item.id === toDoId)
+      this.ToDoItems.splice(itemIndex, 1)
+      this.$refs.listSummary.focus()
+    },
+    editToDo(toDoId, newLabel) {
+      const ToDoEdit = this.ToDoItems.find((item) => item.id === toDoId)
+      ToDoEdit.label = newLabel
     }
   },
   computed: {
