@@ -2,9 +2,11 @@
     <div class="custom-checkbox">
         <input 
             type="checkbox"
+            class="checkbox"
             :id=id
-            v-bind:checked="isDone"
-            class="checkbox"    />
+            :checked="isDone"
+            @change="$event => $emit('checkbox-changed')"   
+        />
         <label :for="id" class="checkbox-label">{{label}}</label>
     </div>
 

@@ -2,12 +2,15 @@
   <div id="app">
         <h1>To Do -lista</h1>
         <ToDoForm @todo-added="addToDo"></ToDoForm>
+        <h2 id="list-summary" ref="listSummary" tabindex="-1">{{ listSummary }}</h2>
         <ul :aria-labelledby="list-summary" class="stack-large">
           <li v-for="item in ToDoItems" :key="item.id">
             <ToDoItem 
               :label="item.label"
               :done="item.done"
-              :id="item.id"></ToDoItem>
+              :id="item.id"
+              @checkbox-changed="$event => updateDoneStatus(item.id)">
+            </ToDoItem>
           </li>
         </ul>
   </div>
@@ -38,8 +41,20 @@ export default {
   methods: {
     addToDo(toDoLabel) {
       this.ToDoItems.push({ id: uniqueId("todo-"), label: toDoLabel, done: false })
+    },
+    updateDoneStatus(toDoId) {
+      const toDoUpdate = this.ToDoItems.find((item) => item.id === toDoId)
+      toDoUpdate.done = !toDoUpdate.done
     }
-  }
+  },
+  computed: {
+    listSummary() {
+      const numberFinishedItems = this.ToDoItems.filter(
+        (item) => item.done
+      ).length
+      return `${numberFinishedItems} out of ${this.ToDoItems.length} items completed`
+    }
+  }  
 }
 </script>
 
